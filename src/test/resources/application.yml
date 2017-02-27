@@ -1,0 +1,60 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+management:
+    security:
+        roles: ADMIN
+    context-path: /management
+spring:
+    application:
+        name: fmsInterviewExercise
+    profiles:
+        # The commented value for `active` can be replaced with valid Spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: #spring.profiles.active#
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    datasource:
+        url: jdbc:mysql://localhost:3306/fmsInterviewExercise?useUnicode=true&characterEncoding=utf8&useSSL=false
+        name: fmsInterviewExercise
+        username: root
+        password: root
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: true
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+
+liquibase:
+    change-log: classpath:/liquibase/master.xml
+    contexts: test
+
+security:
+    basic:
+        enabled: false
+
+server:
+    session:
+        cookie:
+            http-only: true
+
+
+# ===================================================================
+# Application specific properties
+# ===================================================================
+
+application:
+      security:
+          authentication:
+              jwt:
+                  secret: my-secret-token-to-change-in-production
+                  # Token is valid 24 hours
+                  token-validity-in-seconds: 86400
+                  token-validity-in-seconds-for-remember-me: 2592000

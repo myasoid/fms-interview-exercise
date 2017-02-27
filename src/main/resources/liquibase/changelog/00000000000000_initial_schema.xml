@@ -1,0 +1,62 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="miv (generated)" id="1488183691477-1">
+        <createTable tableName="authority">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="authorityPK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)"/>
+        </createTable>
+        <loadData encoding="UTF-8"
+                  file="liquibase/authorities.csv"
+                  separator=";"
+                  tableName="authority">
+        </loadData>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-2">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="userPK"/>
+            </column>
+            <column name="activated" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)"/>
+        </createTable>
+        <loadData encoding="UTF-8"
+                  file="liquibase/users.csv"
+                  separator=";"
+                  tableName="user">
+            <column name="activated" type="boolean"/>
+        </loadData>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-3">
+        <createTable tableName="user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <loadData encoding="UTF-8"
+                  file="liquibase/users_authorities.csv"
+                  separator=";"
+                  tableName="user_authority"/>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-4">
+        <addPrimaryKey columnNames="user_id, authority_id" tableName="user_authority"/>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-5">
+        <addUniqueConstraint columnNames="login" constraintName="UC_USERLOGIN_COL" tableName="user"/>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-6">
+        <addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="user_authority" constraintName="FKgvxjs381k6f48d5d2yi11uh89" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="authority"/>
+    </changeSet>
+    <changeSet author="miv (generated)" id="1488183691477-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_authority" constraintName="FKpqlsjpkybgos9w2svcri7j8xy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+</databaseChangeLog>
